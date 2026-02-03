@@ -1,0 +1,32 @@
+{% load static humanize %}
+<div class="group relative bg-white rounded-2xl shadow-soft border border-slate-100 w-64 sm:w-auto {% if compact %}min-w-[14rem]{% endif %}">
+  <a href="{{ product.get_absolute_url }}" class="block overflow-hidden rounded-t-2xl">
+    <div class="relative aspect-[4/5] bg-gradient-to-b from-slate-100 to-slate-200">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+      {% else %}
+        <div class="w-full h-full bg-gradient-to-br from-slate-100 to-slate-200"></div>
+      {% endif %}
+      {% if product.compare_at_price %}
+        <span class="absolute top-3 end-3 px-2 py-1 text-[11px] rounded-full bg-emerald-100 text-emerald-700">٪{{ product.discount_percent }} تخفیف</span>
+      {% endif %}
+    </div>
+  </a>
+  <div class="p-4 space-y-2">
+    <div class="flex items-center gap-1 text-amber-500 text-sm">
+      <span>★</span><span>{{ product.rating }}</span>
+    </div>
+    <a href="{{ product.get_absolute_url }}" class="block font-semibold text-slate-900 leading-6 line-clamp-2">{{ product.name }}</a>
+    <div class="flex items-center gap-2">
+      <span class="text-lg font-bold text-slate-900">{{ product.price|floatformat:0|intcomma }} تومان</span>
+      {% if product.compare_at_price %}<span class="text-sm line-through text-slate-400">{{ product.compare_at_price|floatformat:0|intcomma }}</span>{% endif %}
+    </div>
+    <form action="{% url 'shop:add_to_cart' %}" method="post" class="mt-2">
+      {% csrf_token %}
+      <input type="hidden" name="product_id" value="{{ product.id }}">
+      <button class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-brand-500 to-emerald-500 text-white py-2.5 text-sm font-semibold hover:shadow-soft transition">
+        افزودن به سبد
+      </button>
+    </form>
+  </div>
+</div>

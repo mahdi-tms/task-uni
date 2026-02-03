@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}ثبت‌نام{% endblock %}
+{% block content %}
+<div class="max-w-xl mx-auto bg-white rounded-2xl shadow-soft border border-slate-100 p-8">
+  <h1 class="text-2xl font-bold mb-2">ساخت حساب</h1>
+  <p class="text-sm text-slate-500 mb-6">در کمتر از یک دقیقه ثبت‌نام کنید.</p>
+  <form method="post" class="grid sm:grid-cols-2 gap-4">
+    {% csrf_token %}
+    {% if form.non_field_errors %}
+      <div class="sm:col-span-2 rounded-lg bg-red-50 text-red-600 text-sm p-3">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+    {% for field in form %}
+      <div class="{% if field.name in 'username password1 password2' %}sm:col-span-2{% else %}sm:col-span-1{% endif %}">
+        <label class="block text-sm font-semibold text-slate-800 mb-2">{{ field.label }}</label>
+        {% if 'password' in field.name %}
+          <div class="relative" data-password-wrapper>
+            {{ field.as_widget(attrs={'class':'w-full rounded-lg border border-slate-200 px-3 py-3 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200'}) }}
+            <button type="button" class="absolute inset-y-0 start-3 text-slate-500 text-xs" data-password-toggle>نمایش</button>
+          </div>
+        {% else %}
+          {{ field.as_widget(attrs={'class':'w-full rounded-lg border border-slate-200 px-3 py-3 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200'}) }}
+        {% endif %}
+        {% if field.errors %}
+          <p class="text-sm text-red-500 mt-1">{{ field.errors|striptags }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <div class="sm:col-span-2 flex items-center justify-between text-sm text-slate-600">
+      <p>با ثبت‌نام، شرایط و قوانین را می‌پذیرم.</p>
+      <a class="text-emerald-600" href="{% url 'shop:login' %}">حساب دارید؟ ورود</a>
+    </div>
+    <div class="sm:col-span-2">
+      <button class="w-full rounded-xl bg-gradient-to-l from-brand-500 to-emerald-500 text-white py-3 font-semibold">ایجاد حساب</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

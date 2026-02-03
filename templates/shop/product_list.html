@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}فروشگاه{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-6">
+  <div>
+    <h1 class="text-2xl font-bold">فروشگاه</h1>
+    <p class="text-sm text-slate-500">جستجو و فیلتر محصولات</p>
+  </div>
+  <button id="filter-drawer-toggle" class="lg:hidden inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-slate-200 text-sm text-slate-700">فیلترها</button>
+</div>
+
+<div class="grid lg:grid-cols-4 gap-6">
+  <aside class="hidden lg:block rounded-2xl bg-white shadow-soft border border-slate-100 p-4 space-y-4" id="filter-sidebar">
+    <form method="get" class="space-y-4">
+      <div>
+        <label class="text-sm font-semibold text-slate-800">جستجو</label>
+        <input type="search" name="q" value="{{ query }}" class="w-full mt-2 rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+      </div>
+      <div>
+        <label class="text-sm font-semibold text-slate-800">دسته‌بندی</label>
+        <div class="mt-2 space-y-2">
+          <a href="{% url 'shop:product_list' %}" class="block text-sm {% if not category_slug %}text-brand-600 font-semibold{% else %}text-slate-600{% endif %}">همه</a>
+          {% for cat in categories %}
+            <label class="flex items-center gap-2 text-sm text-slate-600">
+              <input type="radio" name="category" value="{{ cat.slug }}" {% if category_slug == cat.slug %}checked{% endif %}>
+              <span>{{ cat.name }}</span>
+            </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div>
+        <label class="text-sm font-semibold text-slate-800">مرتب‌سازی</label>
+        <select name="sort" class="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+          <option value="">پیش‌فرض</option>
+          <option value="newest" {% if sort == 'newest' %}selected{% endif %}>جدیدترین</option>
+          <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>ارزان‌ترین</option>
+          <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>گران‌ترین</option>
+        </select>
+      </div>
+      <button class="w-full rounded-xl bg-slate-900 text-white py-2.5 text-sm font-semibold">اعمال</button>
+    </form>
+  </aside>
+
+  <div id="filter-drawer" class="hidden lg:hidden fixed inset-0 z-50 bg-black/30">
+    <div class="absolute top-0 bottom-0 start-0 w-80 bg-white shadow-xl p-5 overflow-y-auto">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold">فیلترها</h3>
+        <button id="filter-drawer-close" class="text-slate-500">✕</button>
+      </div>
+      <form method="get" class="space-y-4">
+        <div>
+          <label class="text-sm font-semibold text-slate-800">جستجو</label>
+          <input type="search" name="q" value="{{ query }}" class="w-full mt-2 rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+        </div>
+        <div>
+          <label class="text-sm font-semibold text-slate-800">دسته‌بندی</label>
+          <div class="mt-2 space-y-2">
+            <a href="{% url 'shop:product_list' %}" class="block text-sm {% if not category_slug %}text-brand-600 font-semibold{% else %}text-slate-600{% endif %}">همه</a>
+            {% for cat in categories %}
+              <label class="flex items-center gap-2 text-sm text-slate-600">
+                <input type="radio" name="category" value="{{ cat.slug }}" {% if category_slug == cat.slug %}checked{% endif %}>
+                <span>{{ cat.name }}</span>
+              </label>
+            {% endfor %}
+          </div>
+        </div>
+        <div>
+          <label class="text-sm font-semibold text-slate-800">مرتب‌سازی</label>
+          <select name="sort" class="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200">
+            <option value="">پیش‌فرض</option>
+            <option value="newest" {% if sort == 'newest' %}selected{% endif %}>جدیدترین</option>
+            <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>ارزان‌ترین</option>
+            <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>گران‌ترین</option>
+          </select>
+        </div>
+        <button class="w-full rounded-xl bg-slate-900 text-white py-2.5 text-sm font-semibold">اعمال</button>
+      </form>
+    </div>
+  </div>
+
+  <section class="lg:col-span-3 space-y-4">
+    {% if page_obj.object_list %}
+      <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        {% for product in page_obj.object_list %}
+          {% include 'shop/includes/product_card.html' with product=product %}
+        {% endfor %}
+      </div>
+      <div class="flex items-center justify-center gap-2 mt-6">
+        {% if page_obj.has_previous %}
+          <a class="px-3 py-2 rounded-lg border border-slate-200 text-sm" href="?page={{ page_obj.previous_page_number }}&q={{ query }}&category={{ category_slug }}&sort={{ sort }}">قبلی</a>
+        {% endif %}
+        <span class="text-sm text-slate-500">صفحه {{ page_obj.number }} از {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+          <a class="px-3 py-2 rounded-lg border border-slate-200 text-sm" href="?page={{ page_obj.next_page_number }}&q={{ query }}&category={{ category_slug }}&sort={{ sort }}">بعدی</a>
+        {% endif %}
+      </div>
+    {% else %}
+      <div class="rounded-2xl bg-white shadow-soft p-8 text-center text-slate-600">
+        <p>محصولی یافت نشد. فیلترها را تغییر دهید.</p>
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

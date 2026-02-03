@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block title %}سفارش ثبت شد{% endblock %}
+{% block content %}
+<div class="rounded-3xl bg-white shadow-soft border border-slate-100 p-10 text-center space-y-4">
+  <div class="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 grid place-items-center mx-auto text-2xl">✓</div>
+  <h1 class="text-2xl font-bold">سفارش شما با موفقیت ثبت شد</h1>
+  <p class="text-slate-600">شماره سفارش: <span class="font-semibold">{{ order.order_number }}</span></p>
+  <div class="flex justify-center gap-3">
+    <a href="{% url 'shop:product_list' %}" class="px-6 py-3 rounded-xl bg-slate-900 text-white">ادامه خرید</a>
+    <a href="{% url 'shop:home' %}" class="px-6 py-3 rounded-xl border border-slate-200 text-slate-700">بازگشت به خانه</a>
+  </div>
+</div>
+{% endblock %}

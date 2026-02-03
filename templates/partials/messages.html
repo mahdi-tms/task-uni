@@ -1,0 +1,13 @@
+{% if messages %}
+  <div class="space-y-2 mb-6" dir="rtl">
+    {% for message in messages %}
+      <div class="flex items-center justify-between rounded-xl px-4 py-3 text-sm shadow-soft {{ message.tags|default:'bg-brand-500 text-white' }}">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex w-6 h-6 items-center justify-center rounded-full bg-white/20 text-white">✔</span>
+          <span>{{ message }}</span>
+        </div>
+        <button class="message-close text-white/80 hover:text-white" aria-label="بستن">×</button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

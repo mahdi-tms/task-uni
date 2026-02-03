@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}خانه | فروشگاه{% endblock %}
+{% block content %}
+<section class="relative overflow-hidden rounded-3xl bg-gradient-to-l from-emerald-500 via-brand-500 to-slate-900 text-white shadow-soft">
+  <div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_#fff,_transparent_40%)]"></div>
+  <div class="grid lg:grid-cols-2 gap-10 px-6 sm:px-10 lg:px-16 py-12 items-center">
+    <div class="space-y-6">
+      <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/15 text-sm font-semibold">کالکشن بهاری ۲۰۲۶</span>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">تجربه خرید لوکس و سریع برای هر سلیقه</h1>
+      <p class="text-lg text-white/90 leading-8">از پوشاک تا گجت، همه در یک فروشگاه با ارسال سریع، بسته‌بندی ویژه و ضمانت بازگشت. بهترین‌های امروز را ببینید.</p>
+      <div class="flex flex-wrap gap-3">
+        <a href="{% url 'shop:product_list' %}" class="px-6 py-3 rounded-xl bg-white text-slate-900 font-semibold shadow-lg hover:-translate-y-0.5 transition">شروع خرید</a>
+        <a href="#best" class="px-6 py-3 rounded-xl border border-white/40 text-white hover:bg-white/10">محصولات منتخب</a>
+      </div>
+      <div class="flex items-center gap-6 text-sm text-white/80">
+        <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-white/15 grid place-items-center">🚚</span>ارسال اکسپرس</div>
+        <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-white/15 grid place-items-center">↩️</span>۷ روز بازگشت</div>
+        <div class="flex items-center gap-2"><span class="w-8 h-8 rounded-lg bg-white/15 grid place-items-center">💬</span>پشتیبانی آنلاین</div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="aspect-[4/5] rounded-3xl bg-white/10 backdrop-blur shadow-2xl overflow-hidden border border-white/10">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.2),transparent_40%),radial-gradient(circle_at_70%_60%,rgba(16,185,129,0.35),transparent_35%)]"></div>
+        <div class="absolute bottom-0 start-0 p-6 space-y-3">
+          <p class="text-sm text-white/80">کالکشن دست‌چین</p>
+          <p class="text-2xl font-bold">همین حالا کشف کن</p>
+          <a href="{% url 'shop:product_list' %}" class="inline-flex items-center gap-2 text-sm font-semibold text-white/90">دیدن همه <span class="inline-block">↗</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-12 grid gap-4 sm:grid-cols-3 text-sm text-slate-700">
+  <div class="flex items-center gap-3 rounded-2xl bg-white shadow-soft px-4 py-3"><span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center">✓</span><div><p class="font-semibold">ارسال رایگان بالای ۲ میلیون</p><p class="text-slate-500">به سراسر ایران</p></div></div>
+  <div class="flex items-center gap-3 rounded-2xl bg-white shadow-soft px-4 py-3"><span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center">↩</span><div><p class="font-semibold">۷ روز ضمانت بازگشت</p><p class="text-slate-500">بدون پرسش اضافی</p></div></div>
+  <div class="flex items-center gap-3 rounded-2xl bg-white shadow-soft px-4 py-3"><span class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center">☎</span><div><p class="font-semibold">پشتیبانی فوری</p><p class="text-slate-500">چت و تماس زنده</p></div></div>
+</section>
+
+<section class="mt-14">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-bold">دسته‌بندی‌های محبوب</h2>
+    <a class="text-sm text-emerald-600 hover:text-emerald-700" href="{% url 'shop:product_list' %}">مشاهده همه</a>
+  </div>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {% for category in categories %}
+      <a href="{% url 'shop:product_list' %}?category={{ category.slug }}" class="relative overflow-hidden rounded-2xl bg-white shadow-soft p-6 group">
+        <div class="absolute inset-0 bg-gradient-to-l from-emerald-50 via-transparent to-transparent opacity-0 group-hover:opacity-60 transition"></div>
+        <div class="flex items-center justify-between">
+          <div>
+            <p class="text-lg font-semibold">{{ category.name }}</p>
+            <p class="text-slate-500 text-sm">محصولات منتخب</p>
+          </div>
+          <span class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-700 grid place-items-center">→</span>
+        </div>
+      </a>
+    {% empty %}
+      <p class="text-slate-500">هنوز دسته‌ای ثبت نشده است.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section id="best" class="mt-14">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-bold">پرفروش‌ها</h2>
+    <a class="text-sm text-emerald-600 hover:text-emerald-700" href="{% url 'shop:product_list' %}?sort=price_desc">مرتب‌سازی قیمت</a>
+  </div>
+  <div class="overflow-x-auto hide-scrollbar">
+    <div class="flex gap-4 min-w-max">
+      {% for product in best_sellers %}
+        {% include 'shop/includes/product_card.html' with product=product compact=True %}
+      {% empty %}
+        <div class="p-6 bg-white rounded-xl shadow">محصولی موجود نیست.</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="mt-14">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-bold">جدیدترین‌ها</h2>
+    <a class="text-sm text-emerald-600 hover:text-emerald-700" href="{% url 'shop:product_list' %}?sort=newest">همه موارد</a>
+  </div>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {% for product in featured_products %}
+      {% include 'shop/includes/product_card.html' with product=product %}
+    {% empty %}
+      <p class="text-slate-500">محصولی موجود نیست.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mt-16 grid lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2 rounded-2xl bg-white shadow-soft p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-xl font-semibold">نظرات خریداران</h3>
+      <span class="text-sm text-emerald-600">امتیاز ۴.۸ از ۵</span>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="rounded-xl border border-slate-100 p-4">
+        <p class="font-semibold mb-2">سارا.م</p>
+        <p class="text-sm text-slate-600 leading-7">بسته‌بندی بسیار تمیز بود و سفارش سریع رسید. حتماً دوباره خرید می‌کنم.</p>
+      </div>
+      <div class="rounded-xl border border-slate-100 p-4">
+        <p class="font-semibold mb-2">علی.ک</p>
+        <p class="text-sm text-slate-600 leading-7">کیفیت محصولات عالی و پشتیبانی پاسخگو. تخفیف‌های خوبی هم داشت.</p>
+      </div>
+    </div>
+  </div>
+  <div class="rounded-2xl bg-slate-900 text-white p-6 flex flex-col gap-4">
+    <p class="text-sm text-white/70">خبرنامه</p>
+    <h3 class="text-2xl font-bold">۱۰٪ تخفیف اولین سفارش</h3>
+    <p class="text-white/80 text-sm">ایمیل خود را وارد کنید تا از جدیدترین پیشنهادها باخبر شوید.</p>
+    <form class="space-y-3">
+      <input type="email" class="w-full rounded-xl bg-white/10 border border-white/20 px-3 py-3 focus:outline-none focus:ring-2 focus:ring-white" placeholder="ایمیل">
+      <button class="w-full rounded-xl bg-white text-slate-900 py-3 font-semibold">ثبت</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

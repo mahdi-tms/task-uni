@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}تسویه حساب{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">تسویه حساب</h1>
+<div class="grid lg:grid-cols-3 gap-6">
+  <div class="lg:col-span-2 rounded-2xl bg-white shadow-soft border border-slate-100 p-6">
+    <h2 class="text-lg font-semibold mb-4">اطلاعات ارسال</h2>
+    <form method="post" class="grid sm:grid-cols-2 gap-4">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="{% if field.name == 'address' %}sm:col-span-2{% else %}sm:col-span-1{% endif %}">
+          <label class="block text-sm font-semibold text-slate-800 mb-2">{{ field.label }}</label>
+          {{ field.as_widget(attrs={'class':'w-full rounded-lg border border-slate-200 px-3 py-3 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200'}) }}
+          {% if field.errors %}
+            <p class="text-sm text-red-500 mt-1">{{ field.errors|striptags }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+      <div class="sm:col-span-2 flex items-center justify-end gap-3 mt-2">
+        <a href="{% url 'shop:cart' %}" class="px-4 py-2 rounded-lg border border-slate-200 text-slate-700">بازگشت به سبد</a>
+        <button class="px-6 py-3 rounded-xl bg-gradient-to-l from-brand-500 to-emerald-500 text-white font-semibold">ثبت سفارش</button>
+      </div>
+    </form>
+  </div>
+  <div class="rounded-2xl bg-white shadow-soft border border-slate-100 p-6 h-fit sticky top-24 space-y-3">
+    <h3 class="text-lg font-semibold">خلاصه سفارش</h3>
+    {% for item in items %}
+      <div class="flex items-center justify-between text-sm text-slate-700">
+        <div>
+          <p class="font-semibold">{{ item.product.name }}</p>
+          <p class="text-slate-500">تعداد: {{ item.quantity }}</p>
+        </div>
+        <span>{{ item.line_total|floatformat:0|intcomma }} تومان</span>
+      </div>
+    {% endfor %}
+    <div class="border-t border-slate-200 pt-3 space-y-1 text-sm text-slate-600">
+      <div class="flex justify-between"><span>جمع جزء</span><span>{{ subtotal|floatformat:0|intcomma }} تومان</span></div>
+      <div class="flex justify-between"><span>ارسال</span><span>{{ shipping|floatformat:0|intcomma }} تومان</span></div>
+      <div class="flex justify-between"><span>مالیات</span><span>{{ tax|floatformat:0|intcomma }} تومان</span></div>
+      <div class="flex justify-between font-bold text-slate-900 text-base">
+        <span>مبلغ کل</span><span>{{ total|floatformat:0|intcomma }} تومان</span>
+      </div>
+    </div>
+    <div class="rounded-xl bg-emerald-50 text-emerald-800 text-sm p-3">پرداخت آنلاین در مرحله بعدی اضافه می‌شود. فعلاً ثبت سفارش آزمایشی است.</div>
+  </div>
+</div>
+{% endblock %}

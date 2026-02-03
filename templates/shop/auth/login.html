@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}ورود{% endblock %}
+{% block content %}
+<div class="max-w-xl mx-auto bg-white rounded-2xl shadow-soft border border-slate-100 p-8">
+  <h1 class="text-2xl font-bold mb-2">ورود</h1>
+  <p class="text-sm text-slate-500 mb-6">برای ادامه وارد حساب کاربری شوید.</p>
+  <form method="post" class="space-y-4">
+    {% csrf_token %}
+    {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
+    {% if form.non_field_errors %}
+      <div class="rounded-lg bg-red-50 text-red-600 text-sm p-3">
+        {{ form.non_field_errors }}
+      </div>
+    {% endif %}
+    {% for field in form %}
+      <div>
+        <label class="block text-sm font-semibold text-slate-800 mb-2">{{ field.label }}</label>
+        {% if field.name == 'password' %}
+          <div class="relative" data-password-wrapper>
+            {{ field.as_widget(attrs={'class':'w-full rounded-lg border border-slate-200 px-3 py-3 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200','autocomplete':'current-password'}) }}
+            <button type="button" class="absolute inset-y-0 start-3 text-slate-500 text-xs" data-password-toggle>نمایش</button>
+          </div>
+        {% else %}
+          {{ field.as_widget(attrs={'class':'w-full rounded-lg border border-slate-200 px-3 py-3 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200'}) }}
+        {% endif %}
+        {% if field.errors %}
+          <p class="text-sm text-red-500 mt-1">{{ field.errors|striptags }}</p>
+        {% endif %}
+      </div>
+    {% endfor %}
+    <div class="flex items-center justify-between text-sm text-slate-600">
+      <label class="inline-flex items-center gap-2"><input type="checkbox" name="remember_me"> <span>مرا به خاطر بسپار</span></label>
+      <a class="text-emerald-600" href="{% url 'shop:password_reset' %}">فراموشی رمز؟</a>
+    </div>
+    <button class="w-full rounded-xl bg-gradient-to-l from-brand-500 to-emerald-500 text-white py-3 font-semibold">ورود</button>
+    <p class="text-sm text-center text-slate-600">حساب ندارید؟ <a class="text-emerald-600 font-semibold" href="{% url 'shop:register' %}">ثبت‌نام</a></p>
+  </form>
+</div>
+{% endblock %}
