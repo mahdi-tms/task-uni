@@ -11,7 +11,7 @@
       {% for field in form %}
         <div class="{% if field.name == 'address' %}sm:col-span-2{% else %}sm:col-span-1{% endif %}">
           <label class="block text-sm font-semibold text-slate-800 mb-2">{{ field.label }}</label>
-          {{ field.as_widget(attrs={'class':'w-full rounded-lg border border-slate-200 px-3 py-3 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200'}) }}
+          {{ field }}
           {% if field.errors %}
             <p class="text-sm text-red-500 mt-1">{{ field.errors|striptags }}</p>
           {% endif %}

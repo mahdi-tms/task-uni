@@ -3,14 +3,13 @@ from decimal import Decimal
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views.decorators.http import require_POST
 
-from .forms import CheckoutForm, RegisterForm
+from .forms import CheckoutForm, RegisterForm, LoginForm
 from .models import Category, Product, Order, OrderItem
 from .utils import get_cart, save_cart, get_cart_items
 
@@ -218,7 +217,7 @@ def login_view(request):
 
     next_url = request.GET.get("next") or request.POST.get("next")
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
+        form = LoginForm(request, data=request.POST)
         remember = request.POST.get("remember_me") == "on"
         if form.is_valid():
             user = form.get_user()
@@ -227,7 +226,8 @@ def login_view(request):
             messages.success(request, "با موفقیت وارد شدید.")
             return redirect(next_url or "/")
     else:
-        form = AuthenticationForm(request)
+        form = LoginForm(request)
+
     return render(request, "shop/auth/login.html", {"form": form, "next": next_url})
 
 

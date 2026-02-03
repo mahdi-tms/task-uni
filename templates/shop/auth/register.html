@@ -16,11 +16,11 @@
         <label class="block text-sm font-semibold text-slate-800 mb-2">{{ field.label }}</label>
         {% if 'password' in field.name %}
           <div class="relative" data-password-wrapper>
-            {{ field.as_widget(attrs={'class':'w-full rounded-lg border border-slate-200 px-3 py-3 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200'}) }}
+            {{ field }}
             <button type="button" class="absolute inset-y-0 start-3 text-slate-500 text-xs" data-password-toggle>نمایش</button>
           </div>
         {% else %}
-          {{ field.as_widget(attrs={'class':'w-full rounded-lg border border-slate-200 px-3 py-3 text-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200'}) }}
+          {{ field }}
         {% endif %}
         {% if field.errors %}
           <p class="text-sm text-red-500 mt-1">{{ field.errors|striptags }}</p>
