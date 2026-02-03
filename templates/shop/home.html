@@ -61,22 +61,20 @@
   </div>
 </section>
 
-<section id="best" class="mt-14">
+
+<section class="mt-14">
   <div class="flex items-center justify-between mb-4">
     <h2 class="text-2xl font-bold">پرفروش‌ها</h2>
     <a class="text-sm text-emerald-600 hover:text-emerald-700" href="{% url 'shop:product_list' %}?sort=price_desc">مرتب‌سازی قیمت</a>
   </div>
-  <div class="overflow-x-auto hide-scrollbar">
-    <div class="flex gap-4 min-w-max">
-      {% for product in best_sellers %}
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {% for product in best_sellers %}
         {% include 'shop/includes/product_card.html' with product=product compact=True %}
       {% empty %}
-        <div class="p-6 bg-white rounded-xl shadow">محصولی موجود نیست.</div>
-      {% endfor %}
-    </div>
+      <p class="text-slate-500">محصولی موجود نیست.</p>
+    {% endfor %}
   </div>
 </section>
-
 <section class="mt-14">
   <div class="flex items-center justify-between mb-4">
     <h2 class="text-2xl font-bold">جدیدترین‌ها</h2>
